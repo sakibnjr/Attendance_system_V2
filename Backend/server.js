@@ -50,6 +50,7 @@ app.post("/add-student", async (req, res) => {
 app.post("/scan", async (req, res) => {
   const mac = req.body.mac;
   console.log(`Received MAC address: ${mac}`);
+
   if (validMacAddresses[mac]) {
     const name = validMacAddresses[mac];
     console.log(`Marked present: ${name}`);
@@ -58,15 +59,15 @@ app.post("/scan", async (req, res) => {
     const attendanceRecord = new Attendance({ mac, name });
     try {
       await attendanceRecord.save();
-      res.send("MAC Address Received");
+      res.send("MAC Address Received"); // Send response after saving
     } catch (error) {
       console.error("Error saving attendance record:", error);
       res.status(500).send("Error recording attendance");
     }
   } else {
     console.log(`MAC address ${mac} not recognized`);
+    res.send("MAC Address not recognized"); // Send response if MAC address is not valid
   }
-  res.send("MAC Address Received");
 });
 
 // Get attendance records
