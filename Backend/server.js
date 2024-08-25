@@ -28,6 +28,22 @@ const Attendance = mongoose.model("Attendance", attendanceSchema);
 
 const validMacAddresses = {};
 
+// Load valid MAC addresses from MongoDB on server startup
+async function loadValidMacAddresses() {
+  try {
+    const students = await Student.find();
+    students.forEach((student) => {
+      validMacAddresses[student.mac] = student.name;
+    });
+    console.log("Valid MAC addresses loaded from MongoDB.");
+  } catch (error) {
+    console.error("Error loading MAC addresses from MongoDB:", error);
+  }
+}
+
+// Initialize valid MAC addresses
+loadValidMacAddresses();
+
 app.use(cors()); // Allow cross-origin requests
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
@@ -55,18 +71,24 @@ app.post("/scan", async (req, res) => {
     const name = validMacAddresses[mac];
     console.log(`Marked present: ${name}`);
 
-    // Store attendance record in MongoDB
-    const attendanceRecord = new Attendance({ mac, name });
     try {
-      await attendanceRecord.save();
-      res.send("MAC Address Received"); // Send response after saving
+      // Check if an attendance record for this MAC address already exists
+      const existingRecord = await Attendance.findOne({ mac, name });
+
+      if (!existingRecord) {
+        // If no existing record, create a new one
+        const attendanceRecord = new Attendance({ mac, name });
+        await attendanceRecord.save();
+      }
+
+      res.send("MAC Address Received");
     } catch (error) {
       console.error("Error saving attendance record:", error);
       res.status(500).send("Error recording attendance");
     }
   } else {
     console.log(`MAC address ${mac} not recognized`);
-    res.send("MAC Address not recognized"); // Send response if MAC address is not valid
+    res.send("MAC Address not recognized");
   }
 });
 
