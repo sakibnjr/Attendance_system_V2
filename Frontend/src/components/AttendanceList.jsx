@@ -1,7 +1,4 @@
-// src/components/AttendanceList.jsx
-
 import React, { useEffect, useState } from "react";
-
 const AttendanceList = () => {
   const [attendanceData, setAttendanceData] = useState([]);
 
@@ -28,28 +25,11 @@ const AttendanceList = () => {
   }, []);
 
   return (
-    <div
-      style={{
-        fontFamily: "Arial, sans-serif",
-        backgroundColor: "#f8f9fa",
-        margin: 0,
-        padding: "20px",
-      }}
-    >
-      <h1 style={{ color: "#343a40" }}>Attendance</h1>
-      <ul style={{ listStyleType: "none", padding: 0 }}>
+    <div className="border-2 rounded-md shadow-md p-2">
+      <h1 className="text-xl">Present Students</h1>
+      <ul>
         {attendanceData.map((record) => (
-          <li
-            key={record.mac}
-            style={{
-              backgroundColor: "#ffffff",
-              border: "1px solid #dee2e6",
-              margin: "5px 0",
-              padding: "10px",
-              borderRadius: "5px",
-              boxShadow: "0 2px 4px rgba(0, 0, 0, 0.1)",
-            }}
-          >
+          <li key={record.mac} className="mb-2">
             {record.name} (MAC: {record.mac}) - Present
           </li>
         ))}

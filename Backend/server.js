@@ -1,15 +1,9 @@
+require("dotenv").config();
 const express = require("express");
 const mongoose = require("mongoose");
 const path = require("path");
 const cors = require("cors");
 const app = express();
-const port = 3000;
-
-// MongoDB connection
-mongoose.connect("mongodb://localhost:27017/attendance", {
-  useNewUrlParser: true,
-  useUnifiedTopology: true,
-});
 
 const studentSchema = new mongoose.Schema({
   name: String,
@@ -107,6 +101,22 @@ app.get("/", (req, res) => {
   res.sendFile(path.join(__dirname, "index.html"));
 });
 
-app.listen(port, () => {
-  console.log(`Server running at http://localhost:${port}`);
-});
+// app.listen(process.env.PORT, () => {
+//   console.log(`Server running at http://localhost:${process.env.PORT}`);
+// });
+
+// MongoDB connection
+mongoose
+  .connect(process.env.MONGO_URI, {
+    useNewUrlParser: true,
+    useUnifiedTopology: true,
+  })
+  .then(() => {
+    //listen for request
+    app.listen(process.env.PORT, () => {
+      console.log("Connected to DB & Listening on port", process.env.PORT);
+    });
+  })
+  .catch((err) => {
+    console.log(err);
+  });

@@ -42,64 +42,40 @@ const AddStudent = () => {
   };
 
   return (
-    <div style={{ fontFamily: "Arial, sans-serif", padding: "20px" }}>
-      <h2>Add Student</h2>
+    <div className="flex flex-col items-center gap-2 border-2 rounded-md shadow-md p-2">
+      <h2 className="text-xl">Add Student</h2>
       <form
         onSubmit={handleSubmit}
-        style={{ maxWidth: "400px", margin: "0 auto" }}
+        className="form-control grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 items-center gap-2"
       >
-        <div style={{ marginBottom: "15px" }}>
-          <label
-            htmlFor="name"
-            style={{ display: "block", marginBottom: "5px" }}
-          >
-            Name:
-          </label>
-          <input
-            id="name"
-            type="text"
-            value={name}
-            onChange={(e) => setName(e.target.value)}
-            style={{ width: "100%", padding: "8px", boxSizing: "border-box" }}
-          />
-        </div>
-        <div style={{ marginBottom: "15px" }}>
-          <label htmlFor="id" style={{ display: "block", marginBottom: "5px" }}>
-            ID:
-          </label>
-          <input
-            id="id"
-            type="text"
-            value={id}
-            onChange={(e) => setId(e.target.value)}
-            style={{ width: "100%", padding: "8px", boxSizing: "border-box" }}
-          />
-        </div>
-        <div style={{ marginBottom: "15px" }}>
-          <label
-            htmlFor="mac"
-            style={{ display: "block", marginBottom: "5px" }}
-          >
-            MAC Address:
-          </label>
-          <input
-            id="mac"
-            type="text"
-            value={mac}
-            onChange={(e) => setMac(e.target.value)}
-            style={{ width: "100%", padding: "8px", boxSizing: "border-box" }}
-          />
-        </div>
-        <button
-          type="submit"
-          style={{
-            padding: "10px 20px",
-            backgroundColor: "#007bff",
-            color: "#fff",
-            border: "none",
-            borderRadius: "5px",
-          }}
-        >
+        <input
+          id="name"
+          type="text"
+          value={name}
+          onChange={(e) => setName(e.target.value)}
+          className="input input-bordered"
+          placeholder="Student Name"
+        />
+
+        <input
+          id="id"
+          type="text"
+          value={id}
+          onChange={(e) => setId(e.target.value)}
+          className="input input-bordered"
+          placeholder="Student ID"
+        />
+
+        <input
+          id="mac"
+          type="text"
+          value={mac}
+          onChange={(e) => setMac(e.target.value)}
+          className="input input-bordered"
+          placeholder="MAC Address"
+        />
+
+        <button type="submit" className="btn btn-primary w-full">
           Add Student
         </button>
       </form>
