@@ -5,6 +5,22 @@ const path = require("path");
 const cors = require("cors");
 const app = express();
 
+// MongoDB connection
+mongoose
+  .connect(process.env.MONGO_URI, {
+    useNewUrlParser: true,
+    useUnifiedTopology: true,
+  })
+  .then(() => {
+    //listen for request
+    app.listen(process.env.PORT, () => {
+      console.log("Connected to DB & Listening on port", process.env.PORT);
+    });
+  })
+  .catch((err) => {
+    console.log(err);
+  });
+
 const studentSchema = new mongoose.Schema({
   name: String,
   id: String,
@@ -104,19 +120,3 @@ app.get("/", (req, res) => {
 // app.listen(process.env.PORT, () => {
 //   console.log(`Server running at http://localhost:${process.env.PORT}`);
 // });
-
-// MongoDB connection
-mongoose
-  .connect(process.env.MONGO_URI, {
-    useNewUrlParser: true,
-    useUnifiedTopology: true,
-  })
-  .then(() => {
-    //listen for request
-    app.listen(process.env.PORT, () => {
-      console.log("Connected to DB & Listening on port", process.env.PORT);
-    });
-  })
-  .catch((err) => {
-    console.log(err);
-  });
