@@ -1,9 +1,12 @@
 import React, { useEffect, useState } from "react";
-//import UpdateStudentForm from "./UpdateStudentForm";
+import { MdDeleteForever } from "react-icons/md";
+import { CiEdit } from "react-icons/ci";
+import { PiStudent } from "react-icons/pi";
+import { FaRegIdBadge } from "react-icons/fa6";
+import { FcAddressBook } from "react-icons/fc";
 
 const StudentList = ({ onDeleteSuccess, onStudentSelect, refresh, url }) => {
   const [students, setStudents] = useState([]);
-  //const [selectedStudent, setSelectedStudent] = useState(null);
 
   useEffect(() => {
     fetchStudents();
@@ -37,38 +40,48 @@ const StudentList = ({ onDeleteSuccess, onStudentSelect, refresh, url }) => {
   };
 
   const handleUpdateClick = (student) => {
-    // setSelectedStudent(student);
     onStudentSelect(student); // Notify parent to show update form
   };
 
   return (
     <div>
-      <h2>Registered Students</h2>
-      <ul>
+      <h2>Total Students : X</h2>
+      <ul className="border-2 rounded-md shadow-md p-2">
         {students.map((student) => (
-          <li key={student._id}>
-            {student.name} (ID: {student.id}, MAC: {student.mac})
+          <li
+            key={student._id}
+            className="flex items-center justify-evenly bg-slate-100 my-2"
+          >
+            <span className="flex items-center">
+              <PiStudent />
+              {student.name}
+            </span>
+
+            <span className="flex items-center">
+              <FaRegIdBadge />
+              {student.id}
+            </span>
+
+            <span className="flex items-center">
+              <FcAddressBook />
+              {student.mac}
+            </span>
+
             <button
               onClick={() => handleUpdateClick(student)}
-              className="btn btn-info"
+              className="btn btn-warning btn-sm"
             >
-              Update
+              <CiEdit />
             </button>
             <button
               onClick={() => handleDelete(student._id)}
-              className="btn btn-error"
+              className="btn btn-error btn-sm"
             >
-              Delete
+              <MdDeleteForever />
             </button>
           </li>
         ))}
       </ul>
-      {/* {selectedStudent && (
-        <UpdateStudentForm
-          student={selectedStudent}
-          onUpdateSuccess={onDeleteSuccess}
-        />
-      )} */}
     </div>
   );
 };

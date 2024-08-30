@@ -7,7 +7,7 @@ const UpdateStudentForm = ({ student, onUpdateSuccess, url }) => {
 
   const handleUpdate = async () => {
     try {
-      const response = await fetch(`${url}/students/${student._id}`, {
+      const response = await fetch(`${url}/update-student/${student._id}`, {
         method: "PUT",
         headers: {
           "Content-Type": "application/json",

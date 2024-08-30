@@ -42,11 +42,11 @@ const AddStudent = ({ url }) => {
   };
 
   return (
-    <div className="flex flex-col items-center gap-2 border-2 rounded-md shadow-md p-2">
-      <h2 className="text-xl">Add Student</h2>
+    <div>
+      <h2 className="border-2 px-4 text-center text-2xl">Add Student</h2>
       <form
         onSubmit={handleSubmit}
-        className="form-control grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 items-center gap-2"
+        className="form-control grid grid-cols-1 gap-2 border-2 rounded-md shadow-md p-2"
       >
         <input
           id="name"

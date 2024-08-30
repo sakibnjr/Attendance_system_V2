@@ -1,22 +1,8 @@
 require("dotenv").config();
 const express = require("express");
 const mongoose = require("mongoose");
-// const path = require("path");
 const cors = require("cors");
 const app = express();
-
-// MongoDB connection
-// mongoose
-//   .connect(process.env.MONGO_URI, {})
-//   .then(() => {
-//     //listen for request
-//     app.listen(process.env.PORT, () => {
-//       console.log("Connected to DB & Listening on port", process.env.PORT);
-//     });
-//   })
-//   .catch((err) => {
-//     console.log(err);
-//   });
 
 mongoose
   .connect(process.env.MONGO_URI)
@@ -56,9 +42,6 @@ const loadValidMacAddresses = async () => {
     console.error("Error loading students:", error);
   }
 };
-
-// Initialize valid MAC addresses
-// await loadValidMacAddresses();
 
 // Add new student
 app.post("/add-student", async (req, res) => {
@@ -125,22 +108,26 @@ app.get("/students", async (req, res) => {
   }
 });
 
-// Update a student
+// Update student information
 app.put("/update-student/:id", async (req, res) => {
   const { id } = req.params;
-  const { name, newMac } = req.body;
+  const { name, id: newId, mac: newMac } = req.body; // Ensure we get all required fields
 
   try {
     const student = await Student.findById(id);
     if (student) {
       const oldMac = student.mac;
+
+      // Update student details
       student.name = name;
+      student.id = newId; // Update student ID
       student.mac = newMac;
       await student.save();
 
       // Update validMacAddresses
       delete validMacAddresses[oldMac]; // Remove the old MAC
       validMacAddresses[newMac] = name; // Add the updated MAC
+
       res.send("Student updated successfully");
     } else {
       res.status(404).send("Student not found");
@@ -172,10 +159,6 @@ app.delete("/attendance", async (req, res) => {
     res.status(500).send("Error deleting attendance records");
   }
 });
-
-// app.get("/", (req, res) => {
-//   res.sendFile(path.join(__dirname, "index.html"));
-// });
 
 app.listen(process.env.PORT, async () => {
   await loadValidMacAddresses();

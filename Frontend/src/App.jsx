@@ -7,6 +7,7 @@ import AddStudent from "./components/AddStudent";
 import StudentList from "./components/StudentList";
 import UpdateStudentForm from "./components/UpdateStudentForm";
 import DeleteAttendanceButton from "./components/DeleteAttendanceButton";
+import Header from "./components/Header";
 
 const App = () => {
   const url = "https://sas-server-0g5o.onrender.com";
@@ -29,14 +30,29 @@ const App = () => {
   };
 
   return (
-    <div className="App">
-      <h1>IoT Attendance System</h1>
-      <StudentList
-        onStudentSelect={setSelectedStudent}
-        refresh={refresh}
-        onDeleteSuccess={handleDeleteSuccess}
-        url={url}
-      />
+    <main className="w-4/5 mx-auto">
+      <Header />
+      <div className="flex flex-col lg:grid lg:grid-cols-9 gap-4 h-screen items-center">
+        <section className="col-span-4">
+          <StudentList
+            onStudentSelect={handleStudentSelect}
+            refresh={refresh}
+            onDeleteSuccess={handleDeleteSuccess}
+            url={url}
+          />
+        </section>
+        <section className="col-span-3 flex flex-col">
+          <AttendanceList url={url} />
+          <DeleteAttendanceButton
+            onDeleteSuccess={handleDeleteSuccess}
+            url={url}
+          />
+        </section>
+        <section className="col-span-2">
+          <AddStudent url={url} />
+        </section>
+      </div>
+
       {selectedStudent && (
         <UpdateStudentForm
           student={selectedStudent}
@@ -44,10 +60,7 @@ const App = () => {
           url={url}
         />
       )}
-      <DeleteAttendanceButton onDeleteSuccess={handleDeleteSuccess} url={url} />
-      <AttendanceList url={url} />
-      <AddStudent url={url} />
-    </div>
+    </main>
   );
 };
 
