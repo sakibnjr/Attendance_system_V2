@@ -28,28 +28,36 @@ const UpdateStudentForm = ({ student, onUpdateSuccess, url }) => {
 
   return (
     <div>
-      <h3>Update Student</h3>
-      <input
-        type="text"
-        placeholder="Name"
-        value={name}
-        onChange={(e) => setName(e.target.value)}
-      />
-      <input
-        type="text"
-        placeholder="ID"
-        value={id}
-        onChange={(e) => setId(e.target.value)}
-      />
-      <input
-        type="text"
-        placeholder="MAC"
-        value={mac}
-        onChange={(e) => setMac(e.target.value)}
-      />
-      <button onClick={handleUpdate} className="btn btn-info">
-        Update
-      </button>
+      <h3 className="bg-warning text-white px-2 rounded-md my-2">
+        Update Student
+      </h3>
+
+      <div className="grid grid-cols-4 gap-2">
+        <input
+          type="text"
+          placeholder="Name"
+          value={name}
+          onChange={(e) => setName(e.target.value)}
+          className="input input-bordered"
+        />
+        <input
+          type="text"
+          placeholder="ID"
+          value={id}
+          onChange={(e) => setId(e.target.value)}
+          className="input input-bordered"
+        />
+        <input
+          type="text"
+          placeholder="MAC"
+          value={mac}
+          onChange={(e) => setMac(e.target.value)}
+          className="input input-bordered"
+        />
+        <button onClick={handleUpdate} className="btn btn-info">
+          Update
+        </button>
+      </div>
     </div>
   );
 };

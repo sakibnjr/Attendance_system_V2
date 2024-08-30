@@ -7,6 +7,7 @@ import { FcAddressBook } from "react-icons/fc";
 
 const StudentList = ({ onDeleteSuccess, onStudentSelect, refresh, url }) => {
   const [students, setStudents] = useState([]);
+  const [totalStudents, setTotalStudents] = useState(0);
 
   useEffect(() => {
     fetchStudents();
@@ -17,6 +18,7 @@ const StudentList = ({ onDeleteSuccess, onStudentSelect, refresh, url }) => {
       const response = await fetch(`${url}/students`);
       const data = await response.json();
       setStudents(data);
+      setTotalStudents(data.length);
     } catch (error) {
       console.error("Error fetching students:", error);
     }
@@ -45,12 +47,35 @@ const StudentList = ({ onDeleteSuccess, onStudentSelect, refresh, url }) => {
 
   return (
     <div>
-      <h2>Total Students : X</h2>
-      <ul className="border-2 rounded-md shadow-md p-2">
+      <div class="stats shadow">
+        <div class="stat">
+          <div class="stat-title">Total Students</div>
+          <div class="stat-value">{totalStudents}</div>
+          <div class="stat-desc">11% less than last month</div>
+        </div>
+      </div>
+
+      <div class="stats shadow mx-4">
+        <div class="stat">
+          <div class="stat-title">Present</div>
+          <div class="stat-value">{totalStudents}</div>
+          <div class="stat-desc">11% less than last month</div>
+        </div>
+      </div>
+
+      <div class="stats shadow">
+        <div class="stat">
+          <div class="stat-title">Absent</div>
+          <div class="stat-value">{totalStudents}</div>
+          <div class="stat-desc">11% less than last month</div>
+        </div>
+      </div>
+
+      <ul className="">
         {students.map((student) => (
           <li
             key={student._id}
-            className="flex items-center justify-evenly bg-slate-100 my-2"
+            className="flex items-center justify-evenly my-2 border-2 shadow-md p-1 rounded-md"
           >
             <span className="flex items-center">
               <PiStudent />

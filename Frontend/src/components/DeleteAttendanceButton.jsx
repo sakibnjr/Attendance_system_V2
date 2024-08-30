@@ -19,8 +19,8 @@ const DeleteAttendanceButton = ({ onDeleteSuccess, url }) => {
   };
 
   return (
-    <button onClick={deleteAttendance} className="btn btn-error">
-      Delete All Attendance Records
+    <button onClick={deleteAttendance} className="btn btn-outline btn-error">
+      Delete All Records
     </button>
   );
 };

@@ -43,10 +43,12 @@ const AddStudent = ({ url }) => {
 
   return (
     <div>
-      <h2 className="border-2 px-4 text-center text-2xl">Add Student</h2>
+      <h2 className="border-2 px-4 text-center text-2xl my-2 rounded-md">
+        Add Student
+      </h2>
       <form
         onSubmit={handleSubmit}
-        className="form-control grid grid-cols-1 gap-2 border-2 rounded-md shadow-md p-2"
+        className="form-control grid grid-cols-1 gap-2"
       >
         <input
           id="name"
@@ -75,7 +77,7 @@ const AddStudent = ({ url }) => {
           placeholder="MAC Address"
         />
 
-        <button type="submit" className="btn btn-primary w-full">
+        <button type="submit" className="btn btn-outline w-full">
           Add Student
         </button>
       </form>

@@ -32,15 +32,7 @@ const App = () => {
   return (
     <main className="w-4/5 mx-auto">
       <Header />
-      <div className="flex flex-col lg:grid lg:grid-cols-9 gap-4 h-screen items-center">
-        <section className="col-span-4">
-          <StudentList
-            onStudentSelect={handleStudentSelect}
-            refresh={refresh}
-            onDeleteSuccess={handleDeleteSuccess}
-            url={url}
-          />
-        </section>
+      <div className="flex flex-col lg:grid lg:grid-cols-10 gap-4 items-center">
         <section className="col-span-3 flex flex-col">
           <AttendanceList url={url} />
           <DeleteAttendanceButton
@@ -48,18 +40,27 @@ const App = () => {
             url={url}
           />
         </section>
+        <section className="col-span-5 flex flex-col">
+          <StudentList
+            onStudentSelect={handleStudentSelect}
+            refresh={refresh}
+            onDeleteSuccess={handleDeleteSuccess}
+            url={url}
+          />
+
+          {selectedStudent && (
+            <UpdateStudentForm
+              student={selectedStudent}
+              onUpdateSuccess={handleUpdateSuccess}
+              url={url}
+            />
+          )}
+        </section>
+
         <section className="col-span-2">
           <AddStudent url={url} />
         </section>
       </div>
-
-      {selectedStudent && (
-        <UpdateStudentForm
-          student={selectedStudent}
-          onUpdateSuccess={handleUpdateSuccess}
-          url={url}
-        />
-      )}
     </main>
   );
 };
