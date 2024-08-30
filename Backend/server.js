@@ -1,16 +1,13 @@
 require("dotenv").config();
 const express = require("express");
 const mongoose = require("mongoose");
-const path = require("path");
+// const path = require("path");
 const cors = require("cors");
 const app = express();
 
 // MongoDB connection
 mongoose
-  .connect(process.env.MONGO_URI, {
-    useNewUrlParser: true,
-    useUnifiedTopology: true,
-  })
+  .connect(process.env.MONGO_URI, {})
   .then(() => {
     //listen for request
     app.listen(process.env.PORT, () => {
@@ -113,10 +110,51 @@ app.get("/attendance", async (req, res) => {
   }
 });
 
-app.get("/", (req, res) => {
-  res.sendFile(path.join(__dirname, "index.html"));
+// Fetch all students
+app.get("/students", async (req, res) => {
+  try {
+    const students = await Student.find();
+    res.json(students);
+  } catch (error) {
+    res.status(500).send("Error fetching students");
+  }
 });
 
-// app.listen(process.env.PORT, () => {
-//   console.log(`Server running at http://localhost:${process.env.PORT}`);
+// Update a student
+app.put("/students/:id", async (req, res) => {
+  const { id } = req.params;
+  const { name, id: studentId, mac } = req.body;
+
+  try {
+    await Student.findByIdAndUpdate(id, { name, id: studentId, mac });
+    res.send("Student updated successfully");
+  } catch (error) {
+    res.status(500).send("Error updating student");
+  }
+});
+
+// Delete a student
+app.delete("/students/:id", async (req, res) => {
+  const { id } = req.params;
+
+  try {
+    await Student.findByIdAndDelete(id);
+    res.send("Student deleted successfully");
+  } catch (error) {
+    res.status(500).send("Error deleting student");
+  }
+});
+
+// Delete all attendance records
+app.delete("/attendance", async (req, res) => {
+  try {
+    await Attendance.deleteMany({});
+    res.send("All attendance records deleted successfully");
+  } catch (error) {
+    res.status(500).send("Error deleting attendance records");
+  }
+});
+
+// app.get("/", (req, res) => {
+//   res.sendFile(path.join(__dirname, "index.html"));
 // });

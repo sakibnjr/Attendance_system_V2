@@ -1,10 +1,10 @@
 import React, { useEffect, useState } from "react";
-const AttendanceList = () => {
+const AttendanceList = ({ url }) => {
   const [attendanceData, setAttendanceData] = useState([]);
 
   const fetchAttendance = async () => {
     try {
-      const response = await fetch("http://localhost:3000/attendance");
+      const response = await fetch(`${url}/attendance`);
       if (response.ok) {
         const data = await response.json();
         setAttendanceData(data);

@@ -2,7 +2,7 @@
 
 import React, { useState } from "react";
 
-const AddStudent = () => {
+const AddStudent = ({ url }) => {
   const [name, setName] = useState("");
   const [id, setId] = useState("");
   const [mac, setMac] = useState("");
@@ -20,7 +20,7 @@ const AddStudent = () => {
     }
 
     try {
-      const response = await fetch("http://localhost:3000/add-student", {
+      const response = await fetch(`${url}/add-student`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
