@@ -14,7 +14,12 @@ const ScannedNetwork = () => {
             <div className="w-3 h-3 rounded-full bg-green-500"></div>
           </div>
           <p className="text-sm">Nearby Networks</p>
-          <IoTrashBinOutline onClick={deleteAllNetworks} />
+          <button
+            onClick={deleteAllNetworks}
+            className="bg-rose-500 rounded-full size-6 flex items-center justify-center"
+          >
+            <IoTrashBinOutline />
+          </button>
         </div>
         <div className="mt-4 max-h-60 overflow-y-auto border border-base-300 rounded-lg p-4">
           <ul className="space-y-2">
