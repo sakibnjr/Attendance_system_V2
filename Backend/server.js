@@ -205,6 +205,17 @@ app.delete("/attendance", async (req, res) => {
   }
 });
 
+// Delete all scanned network records
+app.delete("/networks", async (req, res) => {
+  try {
+    await ScannedNetwork.deleteMany({});
+    res.send("All scanned network records deleted successfully");
+  } catch (error) {
+    console.error("Error deleting scanned network records:", error);
+    res.status(500).send("Error deleting scanned network records");
+  }
+});
+
 app.listen(process.env.PORT, async () => {
   await loadValidMacAddresses();
   // Load valid MAC addresses on startup

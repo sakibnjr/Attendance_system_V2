@@ -8,7 +8,8 @@ import StudentList from "./components/StudentList";
 import UpdateStudentForm from "./components/UpdateStudentForm";
 import DeleteAttendanceButton from "./components/DeleteAttendanceButton";
 import Header from "./components/Header";
-import ScannedNetworkList from "./components/ScannedNetworkList";
+import ScannedNetwork from "./components/ScannedNetwork";
+import { ScannedNetworkProvider } from "./contexts/ScannedNetworkContext";
 
 const App = () => {
   const url = "https://sas-server-0g5o.onrender.com";
@@ -33,7 +34,7 @@ const App = () => {
   return (
     <main className="w-4/5 mx-auto">
       <Header />
-      <div className="flex flex-col lg:grid lg:grid-cols-10 gap-4 items-center">
+      <div className="flex flex-col lg:grid lg:grid-cols-11 gap-4 items-center">
         <section className="col-span-3 flex flex-col">
           <AttendanceList url={url} />
           <DeleteAttendanceButton
@@ -41,7 +42,7 @@ const App = () => {
             url={url}
           />
         </section>
-        <section className="col-span-5 flex flex-col">
+        <section className="col-span-6 flex flex-col">
           <StudentList
             onStudentSelect={handleStudentSelect}
             refresh={refresh}
@@ -62,7 +63,9 @@ const App = () => {
           <AddStudent url={url} />
         </section>
       </div>
-      <ScannedNetworkList url={url} />
+      <ScannedNetworkProvider url={url}>
+        <ScannedNetwork />
+      </ScannedNetworkProvider>
     </main>
   );
 };
