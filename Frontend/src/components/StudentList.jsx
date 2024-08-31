@@ -1,4 +1,3 @@
-// src/components/StudentList.jsx
 import React, { useContext } from "react";
 import { MdDeleteForever } from "react-icons/md";
 import { CiEdit } from "react-icons/ci";
@@ -7,13 +6,19 @@ import { FaRegIdBadge } from "react-icons/fa6";
 import { FcAddressBook } from "react-icons/fc";
 import HashLoader from "react-spinners/HashLoader";
 import { StudentContext } from "../contexts/StudentContext";
+import toast from "react-hot-toast";
 
 const StudentList = () => {
   const { students, deleteStudent, setSelectedStudent, loading } =
     useContext(StudentContext);
 
-  const handleDelete = (studentId) => {
-    deleteStudent(studentId);
+  const handleDelete = async (studentId) => {
+    try {
+      await deleteStudent(studentId);
+      toast.success("Student deleted successfully");
+    } catch (error) {
+      toast.error("Failed to delete student");
+    }
   };
 
   const handleUpdateClick = (student) => {

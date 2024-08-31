@@ -1,6 +1,6 @@
-// src/components/DeleteAttendanceButton.jsx
 import React, { useContext } from "react";
 import { StudentContext } from "../contexts/StudentContext";
+import toast from "react-hot-toast";
 
 const DeleteAttendanceButton = () => {
   const { deleteAllAttendance } = useContext(StudentContext);
@@ -8,9 +8,9 @@ const DeleteAttendanceButton = () => {
   const handleDelete = async () => {
     try {
       await deleteAllAttendance();
-      alert("All attendance records deleted successfully!");
+      toast.success("All attendance records deleted successfully!");
     } catch (error) {
-      alert("Failed to delete attendance records.");
+      toast.error("Failed to delete attendance records.");
     }
   };
 

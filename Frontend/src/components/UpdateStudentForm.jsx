@@ -1,6 +1,6 @@
-// src/components/UpdateStudentForm.jsx
 import React, { useState, useContext, useEffect } from "react";
 import { StudentContext } from "../contexts/StudentContext";
+import toast from "react-hot-toast";
 
 const UpdateStudentForm = () => {
   const { selectedStudent, updateStudent, setSelectedStudent } =
@@ -21,8 +21,10 @@ const UpdateStudentForm = () => {
     if (selectedStudent) {
       try {
         await updateStudent({ ...selectedStudent, name, id, mac });
+        toast.success("Student updated successfully");
+        setSelectedStudent(null); // Clear the selected student after update
       } catch (error) {
-        console.error("Error updating student:", error);
+        toast.error("Failed to update student");
       }
     }
   };

@@ -1,5 +1,6 @@
 // src/App.jsx
 import React from "react";
+import { Toaster } from "react-hot-toast";
 import AttendanceList from "./components/AttendanceList";
 import AddStudent from "./components/AddStudent";
 import StudentList from "./components/StudentList";
@@ -22,6 +23,7 @@ const App = () => {
           <section className="col-span-3 flex flex-col">
             <AttendanceList />
             <DeleteAttendanceButton />
+            <Toaster />
           </section>
           <section className="col-span-6 flex flex-col">
             <StudentList />
