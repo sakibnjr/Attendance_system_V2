@@ -36,7 +36,7 @@ app.use(cors()); // Allow cross-origin requests
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 
-// Load all valid MAC addresses from the database on startup
+// Load all valid MAC addresses from the database
 const loadValidMacAddresses = async () => {
   try {
     const students = await Student.find({});
@@ -57,7 +57,7 @@ app.post("/add-student", async (req, res) => {
   const student = new Student({ name, id, mac });
   try {
     await student.save();
-    validMacAddresses[mac] = name;
+    validMacAddresses[mac] = name; // Update cache
     res.status(201).send("Student added successfully");
   } catch (error) {
     res.status(500).send("Error adding student");
@@ -188,8 +188,13 @@ app.delete("/students/:id", async (req, res) => {
   const { id } = req.params;
 
   try {
-    await Student.findByIdAndDelete(id);
-    res.send("Student deleted successfully");
+    const student = await Student.findByIdAndDelete(id);
+    if (student) {
+      delete validMacAddresses[student.mac]; // Update cache
+      res.send("Student deleted successfully");
+    } else {
+      res.status(404).send("Student not found");
+    }
   } catch (error) {
     res.status(500).send("Error deleting student");
   }
