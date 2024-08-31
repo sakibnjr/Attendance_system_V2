@@ -1,37 +1,39 @@
-import React, { useState } from "react";
+// src/components/UpdateStudentForm.jsx
+import React, { useState, useContext, useEffect } from "react";
+import { StudentContext } from "../contexts/StudentContext";
 
-const UpdateStudentForm = ({ student, onUpdateSuccess, url }) => {
-  const [name, setName] = useState(student.name);
-  const [id, setId] = useState(student.id);
-  const [mac, setMac] = useState(student.mac);
+const UpdateStudentForm = () => {
+  const { selectedStudent, updateStudent, setSelectedStudent } =
+    useContext(StudentContext);
+  const [name, setName] = useState(selectedStudent?.name || "");
+  const [id, setId] = useState(selectedStudent?.id || "");
+  const [mac, setMac] = useState(selectedStudent?.mac || "");
+
+  useEffect(() => {
+    if (selectedStudent) {
+      setName(selectedStudent.name);
+      setId(selectedStudent.id);
+      setMac(selectedStudent.mac);
+    }
+  }, [selectedStudent]);
 
   const handleUpdate = async () => {
-    try {
-      const response = await fetch(`${url}/update-student/${student._id}`, {
-        method: "PUT",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ name, id, mac }),
-      });
-
-      if (response.ok) {
-        alert("Student updated successfully!");
-        onUpdateSuccess(); // Notify parent to refresh list
-      } else {
-        alert("Failed to update student.");
+    if (selectedStudent) {
+      try {
+        await updateStudent({ ...selectedStudent, name, id, mac });
+      } catch (error) {
+        console.error("Error updating student:", error);
       }
-    } catch (error) {
-      console.error("Error updating student:", error);
     }
   };
+
+  if (!selectedStudent) return null; // Don't render if no student is selected
 
   return (
     <div>
       <h3 className="bg-warning text-white px-2 rounded-md my-2">
         Update Student
       </h3>
-
       <div className="grid grid-cols-4 gap-2">
         <input
           type="text"

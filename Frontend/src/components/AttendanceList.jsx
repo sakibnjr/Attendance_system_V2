@@ -1,32 +1,17 @@
-import React, { useEffect, useState } from "react";
+// src/components/AttendanceList.jsx
+import React, { useContext, useEffect } from "react";
 import { FcVoicePresentation } from "react-icons/fc";
+import { StudentContext } from "../contexts/StudentContext";
 
-const AttendanceList = ({ url }) => {
-  const [attendanceData, setAttendanceData] = useState([]);
-  const [error, setError] = useState(null);
-
-  const fetchAttendance = async () => {
-    try {
-      const response = await fetch(`${url}/attendance`);
-      if (response.ok) {
-        const data = await response.json();
-        setAttendanceData(data);
-        setError(null); // Reset error on successful fetch
-      } else {
-        throw new Error("Failed to fetch attendance data");
-      }
-    } catch (error) {
-      setError(error.message);
-      console.error("Error fetching attendance:", error);
-    }
-  };
+const AttendanceList = () => {
+  const { attendanceData, fetchAttendance, error } = useContext(StudentContext);
 
   useEffect(() => {
-    fetchAttendance(); // Initial fetch
+    fetchAttendance();
     const intervalId = setInterval(fetchAttendance, 10000); // Fetch data every 10 seconds
 
     return () => clearInterval(intervalId); // Cleanup interval on component unmount
-  }, [url]); // Added url to dependency array
+  }, [fetchAttendance]);
 
   const today = new Date();
   const currentDay = today.getDay();
@@ -65,9 +50,7 @@ const AttendanceList = ({ url }) => {
       <h2 className="border-2 px-4 text-center text-2xl rounded-md">
         {dayName} {currentDate} {monthName}
       </h2>
-
       {error && <p className="text-red-500 text-center">{error}</p>}
-
       {attendanceData.length === 0 ? (
         <p className="text-center my-2">No students are present!</p>
       ) : (

@@ -1,13 +1,14 @@
 // src/components/AddStudent.jsx
+import React, { useState, useContext } from "react";
+import { StudentContext } from "../contexts/StudentContext";
 
-import React, { useState } from "react";
-
-const AddStudent = ({ url }) => {
+const AddStudent = () => {
   const [name, setName] = useState("");
   const [id, setId] = useState("");
   const [mac, setMac] = useState("");
   const [error, setError] = useState("");
   const [success, setSuccess] = useState("");
+  const { addStudent } = useContext(StudentContext);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -20,24 +21,13 @@ const AddStudent = ({ url }) => {
     }
 
     try {
-      const response = await fetch(`${url}/add-student`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ name, id, mac }),
-      });
-
-      if (response.ok) {
-        setSuccess("Student added successfully");
-        setName("");
-        setId("");
-        setMac("");
-      } else {
-        setError("Failed to add student");
-      }
+      await addStudent({ name, id, mac });
+      setSuccess("Student added successfully");
+      setName("");
+      setId("");
+      setMac("");
     } catch (error) {
-      setError("Error: " + error.message);
+      setError("Failed to add student");
     }
   };
 
@@ -51,32 +41,26 @@ const AddStudent = ({ url }) => {
         className="form-control grid grid-cols-1 gap-2"
       >
         <input
-          id="name"
           type="text"
           value={name}
           onChange={(e) => setName(e.target.value)}
           className="input input-bordered"
           placeholder="Student Name"
         />
-
         <input
-          id="id"
           type="text"
           value={id}
           onChange={(e) => setId(e.target.value)}
           className="input input-bordered"
           placeholder="Student ID"
         />
-
         <input
-          id="mac"
           type="text"
           value={mac}
           onChange={(e) => setMac(e.target.value)}
           className="input input-bordered"
           placeholder="MAC Address"
         />
-
         <button type="submit" className="btn btn-outline w-full">
           Add Student
         </button>
