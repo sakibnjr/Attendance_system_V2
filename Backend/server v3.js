@@ -1,25 +1,38 @@
-require("dotenv").config();
+// server.js
+
 const express = require("express");
 const mongoose = require("mongoose");
 const cors = require("cors");
 const app = express();
+const port = 3000;
 
-mongoose
-  .connect(process.env.MONGO_URI)
-  .then(() => console.log("Connected to DB"));
+// MongoDB connection
+mongoose.connect("mongodb://localhost:27017/attendance", {
+  useNewUrlParser: true,
+  useUnifiedTopology: true,
+});
 
+// Schema and model definitions
+
+// Student Schema and Model
 const studentSchema = new mongoose.Schema({
   name: String,
   id: String,
   mac: String,
 });
 
+const Student = mongoose.model("Student", studentSchema);
+
+// Attendance Schema and Model
 const attendanceSchema = new mongoose.Schema({
   mac: String,
   name: String,
   timestamp: { type: Date, default: Date.now },
 });
 
+const Attendance = mongoose.model("Attendance", attendanceSchema);
+
+// Scanned Network Schema and Model
 const scannedNetworkSchema = new mongoose.Schema({
   ssid: String,
   mac: String,
@@ -27,39 +40,26 @@ const scannedNetworkSchema = new mongoose.Schema({
 });
 
 const ScannedNetwork = mongoose.model("ScannedNetwork", scannedNetworkSchema);
-const Student = mongoose.model("Student", studentSchema);
-const Attendance = mongoose.model("Attendance", attendanceSchema);
 
-let validMacAddresses = {};
+// Valid MAC addresses storage
+const validMacAddresses = {};
 
-app.use(cors()); // Allow cross-origin requests
+// Middleware setup
+app.use(cors());
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 
-// Load all valid MAC addresses from the database on startup
-const loadValidMacAddresses = async () => {
-  try {
-    const students = await Student.find({});
-    validMacAddresses = students.reduce((acc, student) => {
-      acc[student.mac] = student.name;
-      return acc;
-    }, {});
-    console.log("Loaded valid MAC addresses:", validMacAddresses);
-  } catch (error) {
-    console.error("Error loading students:", error);
-  }
-};
-
-// Add new student
+// Route to add a new student
 app.post("/add-student", async (req, res) => {
   const { name, id, mac } = req.body;
 
-  const student = new Student({ name, id, mac });
   try {
+    const student = new Student({ name, id, mac });
     await student.save();
-    validMacAddresses[mac] = name;
+    validMacAddresses[mac] = name; // Update valid MAC addresses
     res.status(201).send("Student added successfully");
   } catch (error) {
+    console.error("Error adding student:", error);
     res.status(500).send("Error adding student");
   }
 });
@@ -112,58 +112,34 @@ app.post("/scan", async (req, res) => {
   }
 });
 
-// ** New Endpoint to Get All Scanned Networks **
-app.get("/networks", async (req, res) => {
-  try {
-    const networks = await ScannedNetwork.find().sort({ timestamp: -1 });
-    res.json(networks);
-  } catch (error) {
-    console.error("Error fetching scanned networks:", error);
-    res.status(500).send("Error fetching scanned networks");
-  }
-});
-
-// Get attendance records
-app.get("/attendance", async (req, res) => {
-  try {
-    const records = await Attendance.find().sort({ timestamp: -1 });
-    res.json(records);
-  } catch (error) {
-    console.error("Error fetching attendance records:", error);
-    res.status(500).send("Error fetching attendance records");
-  }
-});
-
-// Fetch all students
+// Route to fetch all registered students
 app.get("/students", async (req, res) => {
   try {
     const students = await Student.find();
     res.json(students);
   } catch (error) {
+    console.error("Error fetching students:", error);
     res.status(500).send("Error fetching students");
   }
 });
 
-// Update student information
+// Route to update student information
 app.put("/update-student/:id", async (req, res) => {
   const { id } = req.params;
-  const { name, id: newId, mac: newMac } = req.body; // Ensure we get all required fields
+  const { name, id: studentId, mac } = req.body;
 
   try {
     const student = await Student.findById(id);
     if (student) {
       const oldMac = student.mac;
-
-      // Update student details
       student.name = name;
-      student.id = newId; // Update student ID
-      student.mac = newMac;
+      student.id = studentId;
+      student.mac = mac;
       await student.save();
 
       // Update validMacAddresses
       delete validMacAddresses[oldMac]; // Remove the old MAC
-      validMacAddresses[newMac] = name; // Add the updated MAC
-
+      validMacAddresses[mac] = name; // Add the updated MAC
       res.send("Student updated successfully");
     } else {
       res.status(404).send("Student not found");
@@ -174,30 +150,58 @@ app.put("/update-student/:id", async (req, res) => {
   }
 });
 
-// Delete a student
-app.delete("/students/:id", async (req, res) => {
+// Route to delete a student
+app.delete("/delete-student/:id", async (req, res) => {
   const { id } = req.params;
 
   try {
-    await Student.findByIdAndDelete(id);
-    res.send("Student deleted successfully");
+    const student = await Student.findByIdAndDelete(id);
+    if (student) {
+      delete validMacAddresses[student.mac]; // Remove from valid MAC addresses
+      res.send("Student deleted successfully");
+    } else {
+      res.status(404).send("Student not found");
+    }
   } catch (error) {
+    console.error("Error deleting student:", error);
     res.status(500).send("Error deleting student");
   }
 });
 
-// Delete all attendance records
-app.delete("/attendance", async (req, res) => {
+// Route to fetch scanned network information
+app.get("/networks", async (req, res) => {
+  try {
+    const networks = await ScannedNetwork.find().sort({ timestamp: -1 });
+    res.json(networks);
+  } catch (error) {
+    console.error("Error fetching scanned networks:", error);
+    res.status(500).send("Error fetching network data");
+  }
+});
+
+// Route to delete all attendance records
+app.delete("/delete-attendance", async (req, res) => {
   try {
     await Attendance.deleteMany({});
     res.send("All attendance records deleted successfully");
   } catch (error) {
+    console.error("Error deleting attendance records:", error);
     res.status(500).send("Error deleting attendance records");
   }
 });
 
-app.listen(process.env.PORT, async () => {
-  await loadValidMacAddresses();
-  // Load valid MAC addresses on startup
-  console.log(`Server running at ${process.env.PORT}`);
+// Route to fetch all attendance records
+app.get("/attendance", async (req, res) => {
+  try {
+    const records = await Attendance.find().sort({ timestamp: -1 });
+    res.json(records);
+  } catch (error) {
+    console.error("Error fetching attendance records:", error);
+    res.status(500).send("Error fetching attendance records");
+  }
+});
+
+// Start server
+app.listen(port, () => {
+  console.log(`Server running at http://localhost:${port}`);
 });

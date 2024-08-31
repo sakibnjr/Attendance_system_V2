@@ -20,13 +20,6 @@ const attendanceSchema = new mongoose.Schema({
   timestamp: { type: Date, default: Date.now },
 });
 
-const scannedNetworkSchema = new mongoose.Schema({
-  ssid: String,
-  mac: String,
-  timestamp: { type: Date, default: Date.now },
-});
-
-const ScannedNetwork = mongoose.model("ScannedNetwork", scannedNetworkSchema);
 const Student = mongoose.model("Student", studentSchema);
 const Attendance = mongoose.model("Attendance", attendanceSchema);
 
@@ -64,62 +57,33 @@ app.post("/add-student", async (req, res) => {
   }
 });
 
-// Route to handle MAC address scanning and network scan data
+// Handle MAC address scanning
 app.post("/scan", async (req, res) => {
-  const { mac, ssid } = req.body; // Expecting either 'mac' or 'ssid' in the request body
+  const mac = req.body.mac;
+  console.log(`Received MAC address: ${mac}`);
 
-  if (ssid && mac) {
-    // Handle network scan data
-    console.log(`Received network scan data: SSID: ${ssid}, MAC: ${mac}`);
+  if (validMacAddresses[mac]) {
+    const name = validMacAddresses[mac];
+    console.log(`Marked present: ${name}`);
 
     try {
-      const scannedNetwork = new ScannedNetwork({ ssid, mac });
-      await scannedNetwork.save();
-      res.status(200).send("Network info received");
-    } catch (error) {
-      console.error("Error saving scanned network data:", error);
-      res.status(500).send("Error saving network data");
-    }
-  } else if (mac) {
-    // Handle attendance data (MAC address scanning)
-    console.log(`Received MAC address: ${mac}`);
+      // Check if an attendance record for this MAC address already exists
+      const existingRecord = await Attendance.findOne({ mac, name });
 
-    if (validMacAddresses[mac]) {
-      const name = validMacAddresses[mac];
-      console.log(`Marked present: ${name}`);
-
-      try {
-        // Check if an attendance record for this MAC address already exists
-        const existingRecord = await Attendance.findOne({ mac, name });
-
-        if (!existingRecord) {
-          // If no existing record, create a new one
-          const attendanceRecord = new Attendance({ mac, name });
-          await attendanceRecord.save();
-        }
-
-        res.send("MAC Address Received");
-      } catch (error) {
-        console.error("Error saving attendance record:", error);
-        res.status(500).send("Error recording attendance");
+      if (!existingRecord) {
+        // If no existing record, create a new one
+        const attendanceRecord = new Attendance({ mac, name });
+        await attendanceRecord.save();
       }
-    } else {
-      console.log(`MAC address ${mac} not recognized`);
-      res.send("MAC Address not recognized");
+
+      res.send("MAC Address Received");
+    } catch (error) {
+      console.error("Error saving attendance record:", error);
+      res.status(500).send("Error recording attendance");
     }
   } else {
-    res.status(400).send("Invalid data received");
-  }
-});
-
-// ** New Endpoint to Get All Scanned Networks **
-app.get("/networks", async (req, res) => {
-  try {
-    const networks = await ScannedNetwork.find().sort({ timestamp: -1 });
-    res.json(networks);
-  } catch (error) {
-    console.error("Error fetching scanned networks:", error);
-    res.status(500).send("Error fetching scanned networks");
+    console.log(`MAC address ${mac} not recognized`);
+    res.send("MAC Address not recognized");
   }
 });
 

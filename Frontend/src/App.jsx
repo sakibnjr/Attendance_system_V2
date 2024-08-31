@@ -8,6 +8,7 @@ import StudentList from "./components/StudentList";
 import UpdateStudentForm from "./components/UpdateStudentForm";
 import DeleteAttendanceButton from "./components/DeleteAttendanceButton";
 import Header from "./components/Header";
+import ScannedNetworkList from "./components/ScannedNetworkList";
 
 const App = () => {
   const url = "https://sas-server-0g5o.onrender.com";
@@ -61,6 +62,7 @@ const App = () => {
           <AddStudent url={url} />
         </section>
       </div>
+      <ScannedNetworkList url={url} />
     </main>
   );
 };

@@ -47,31 +47,30 @@ const StudentList = ({ onDeleteSuccess, onStudentSelect, refresh, url }) => {
 
   return (
     <div>
-      <div class="stats shadow">
-        <div class="stat">
-          <div class="stat-title">Total Students</div>
-          <div class="stat-value">{totalStudents}</div>
-          <div class="stat-desc">11% less than last month</div>
+      <div className="stats shadow">
+        <div className="stat">
+          <div className="stat-title">Total Students</div>
+          <div className="stat-value">{totalStudents}</div>
+          <div className="stat-desc">11% less than last month</div>
         </div>
       </div>
 
-      <div class="stats shadow mx-4">
-        <div class="stat">
-          <div class="stat-title">Present</div>
-          <div class="stat-value">{totalStudents}</div>
-          <div class="stat-desc">11% less than last month</div>
+      <div className="stats shadow mx-4">
+        <div className="stat">
+          <div className="stat-title">Present</div>
+          <div className="stat-value">{totalStudents}</div>
+          <div className="stat-desc">11% less than last month</div>
         </div>
       </div>
 
-      <div class="stats shadow">
-        <div class="stat">
-          <div class="stat-title">Absent</div>
-          <div class="stat-value">{totalStudents}</div>
-          <div class="stat-desc">11% less than last month</div>
+      <div className="stats shadow">
+        <div className="stat">
+          <div className="stat-title">Absent</div>
+          <div className="stat-value">{totalStudents}</div>
+          <div className="stat-desc">11% less than last month</div>
         </div>
       </div>
-
-      <ul className="">
+      <ul>
         {students.map((student) => (
           <li
             key={student._id}
