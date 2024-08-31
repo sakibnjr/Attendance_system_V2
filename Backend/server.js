@@ -73,9 +73,18 @@ app.post("/scan", async (req, res) => {
     console.log(`Received network scan data: SSID: ${ssid}, MAC: ${mac}`);
 
     try {
-      const scannedNetwork = new ScannedNetwork({ ssid, mac });
-      await scannedNetwork.save();
-      res.status(200).send("Network info received");
+      // Check if both SSID and MAC already exist together
+      const existingNetwork = await ScannedNetwork.findOne({ ssid, mac });
+
+      if (!existingNetwork) {
+        // If either SSID or MAC is new, save the new record
+        const scannedNetwork = new ScannedNetwork({ ssid, mac });
+        await scannedNetwork.save();
+        res.status(200).send("Network info received");
+      } else {
+        // If both SSID and MAC exist, do not save duplicate entry
+        res.status(200).send("Duplicate network info. No new data saved.");
+      }
     } catch (error) {
       console.error("Error saving scanned network data:", error);
       res.status(500).send("Error saving network data");
