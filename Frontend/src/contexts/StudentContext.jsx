@@ -9,6 +9,8 @@ export const StudentProvider = ({ children, url }) => {
   const [selectedStudent, setSelectedStudent] = useState(null);
   const [error, setError] = useState(null);
   const [loading, setLoading] = useState(false);
+  const [totalStudent, setTotalStudent] = useState("");
+  const [presentStudent, setPresentStudent] = useState("");
 
   useEffect(() => {
     fetchStudents();
@@ -21,6 +23,7 @@ export const StudentProvider = ({ children, url }) => {
       const response = await fetch(`${url}/students`);
       const data = await response.json();
       setStudents(data);
+      setTotalStudent(data.length);
     } catch (error) {
       console.error("Error fetching students:", error);
     } finally {
@@ -34,6 +37,7 @@ export const StudentProvider = ({ children, url }) => {
       if (response.ok) {
         const data = await response.json();
         setAttendanceData(data);
+        setPresentStudent(data.length);
         setError(null);
       } else {
         throw new Error("Failed to fetch attendance data");
@@ -117,6 +121,7 @@ export const StudentProvider = ({ children, url }) => {
     }
   };
 
+  const absentStudent = totalStudent - presentStudent;
   return (
     <StudentContext.Provider
       value={{
@@ -131,6 +136,9 @@ export const StudentProvider = ({ children, url }) => {
         deleteAllAttendance,
         error,
         loading,
+        totalStudent,
+        presentStudent,
+        absentStudent,
       }}
     >
       {children}

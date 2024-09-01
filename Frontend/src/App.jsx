@@ -1,5 +1,5 @@
 // src/App.jsx
-import React from "react";
+import React, { useState } from "react";
 import { Toaster } from "react-hot-toast";
 import AttendanceList from "./components/AttendanceList";
 import AddStudent from "./components/AddStudent";
@@ -10,10 +10,16 @@ import Header from "./components/Header";
 import ScannedNetwork from "./components/ScannedNetwork";
 import { ScannedNetworkProvider } from "./contexts/ScannedNetworkContext";
 import { StudentProvider } from "./contexts/StudentContext";
+import EncryptedButton from "./components/EncryptedButton";
 
 const App = () => {
   const url = "https://sas-server-0g5o.onrender.com";
   //const url = "http://localhost:3000";
+
+  const [showNetworks, setShowNetworks] = useState(false);
+  function showNetwork() {
+    setShowNetworks((net) => !net);
+  }
 
   return (
     <StudentProvider url={url}>
@@ -34,7 +40,12 @@ const App = () => {
           </section>
         </div>
         <ScannedNetworkProvider url={url}>
-          <ScannedNetwork />
+          <div className="flex justify-center mt-4">
+            <button onClick={showNetwork}>
+              <EncryptedButton />
+            </button>
+          </div>
+          {showNetworks && <ScannedNetwork />}
         </ScannedNetworkProvider>
       </main>
     </StudentProvider>

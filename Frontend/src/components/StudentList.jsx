@@ -4,13 +4,20 @@ import { CiEdit } from "react-icons/ci";
 import { PiStudent } from "react-icons/pi";
 import { FaRegIdBadge } from "react-icons/fa6";
 import { FcAddressBook } from "react-icons/fc";
-import HashLoader from "react-spinners/HashLoader";
+import ScaleLoader from "react-spinners/ScaleLoader";
 import { StudentContext } from "../contexts/StudentContext";
 import toast from "react-hot-toast";
 
 const StudentList = () => {
-  const { students, deleteStudent, setSelectedStudent, loading } =
-    useContext(StudentContext);
+  const {
+    students,
+    deleteStudent,
+    setSelectedStudent,
+    loading,
+    totalStudent,
+    presentStudent,
+    absentStudent,
+  } = useContext(StudentContext);
 
   const handleDelete = async (studentId) => {
     try {
@@ -30,7 +37,7 @@ const StudentList = () => {
       <div className="stats shadow">
         <div className="stat">
           <div className="stat-title">Total Students</div>
-          <div className="stat-value">50</div>
+          <div className="stat-value">{totalStudent}</div>
           <div className="stat-desc">11% less than last month</div>
         </div>
       </div>
@@ -38,7 +45,7 @@ const StudentList = () => {
       <div className="stats shadow mx-4">
         <div className="stat">
           <div className="stat-title">Present</div>
-          <div className="stat-value">50</div>
+          <div className="stat-value">{presentStudent}</div>
           <div className="stat-desc">11% less than last month</div>
         </div>
       </div>
@@ -46,13 +53,13 @@ const StudentList = () => {
       <div className="stats shadow">
         <div className="stat">
           <div className="stat-title">Absent</div>
-          <div className="stat-value">50</div>
+          <div className="stat-value">{absentStudent}</div>
           <div className="stat-desc">11% less than last month</div>
         </div>
       </div>
       {loading ? (
-        <div className="flex justify-center items-center mt-5">
-          <HashLoader color="#36d7b7" />
+        <div className="flex justify-center items-center mt-2">
+          <ScaleLoader color="#36d7b7" />
         </div>
       ) : (
         <ul>
