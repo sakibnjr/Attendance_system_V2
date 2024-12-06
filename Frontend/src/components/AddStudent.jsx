@@ -29,7 +29,7 @@ const AddStudent = () => {
 
   return (
     <div>
-      <h2 className="border-2 px-4 text-center text-2xl my-2 rounded-md">
+      <h2 className="border-2 px-4 text-center text-2xl my-2 rounded-md text-secondary">
         Add Student
       </h2>
       <form
