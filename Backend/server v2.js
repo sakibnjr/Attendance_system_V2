@@ -27,7 +27,6 @@ let validMacAddresses = {};
 
 app.use(cors()); // Allow cross-origin requests
 app.use(express.urlencoded({ extended: true }));
-app.use(express.json());
 
 // Load all valid MAC addresses from the database on startup
 const loadValidMacAddresses = async () => {

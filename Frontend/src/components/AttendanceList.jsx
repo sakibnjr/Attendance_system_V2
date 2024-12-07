@@ -93,7 +93,7 @@ const AttendanceList = () => {
             >
               <div className="flex items-center gap-3">
                 <FcVoicePresentation className="text-2xl" />
-                <span className="font-semibold text-lg text-neutral-content">
+                <span className="font-semibold text-lg text-black">
                   {record.name}
                 </span>
               </div>

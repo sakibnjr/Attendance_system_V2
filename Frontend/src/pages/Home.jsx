@@ -1,6 +1,5 @@
 import React from "react";
 import AttendanceList from "../components/AttendanceList";
-import DeleteAttendanceButton from "../components/DeleteAttendanceButton";
 import { Toaster } from "react-hot-toast";
 import { motion } from "framer-motion";
 import { FaUserCircle } from "react-icons/fa";
@@ -47,14 +46,6 @@ const Home = () => {
             transition={{ type: "spring", stiffness: 200 }}
           >
             <AttendanceList />
-          </motion.div>
-
-          {/* Delete Attendance Button */}
-          <motion.div
-            whileHover={{ scale: 1.1 }}
-            transition={{ type: "spring", stiffness: 200 }}
-          >
-            <DeleteAttendanceButton />
           </motion.div>
 
           {/* Toaster for Notifications */}

@@ -1,8 +1,28 @@
 // src/routes/studentRoutes.js
 const express = require("express");
 const Student = require("../models/student");
-
+const {
+  generateRegistrationOptions,
+  verifyRegistrationResponse,
+  generateAuthenticationOptions,
+  verifyAuthenticationResponse,
+} = require("@simplewebauthn/server");
 const router = express.Router();
+
+let validMacAddresses = {};
+
+const loadValidMacAddresses = async () => {
+  try {
+    const students = await Student.find({});
+    validMacAddresses = students.reduce((acc, student) => {
+      acc[student.mac] = student.name;
+      return acc;
+    }, {});
+    console.log("Loaded valid MAC addresses:", validMacAddresses);
+  } catch (error) {
+    console.error("Error loading students:", error);
+  }
+};
 
 // Add new student
 router.post("/add-student", async (req, res) => {

@@ -8,6 +8,8 @@ import { ScannedNetworkProvider } from "../contexts/ScannedNetworkContext";
 import { motion } from "framer-motion";
 import Navbar from "../components/Navbar";
 import Footer from "../components/Footer";
+import DeleteAttendance from "../components/DeleteAttendanceButton";
+import AttendanceManager from "../components/AttendanceManager";
 
 const Admin = ({ url }) => {
   const [showNetworks, setShowNetworks] = useState(false);
@@ -56,8 +58,20 @@ const Admin = ({ url }) => {
           transition={{ duration: 0.5, delay: 0.3 }}
         >
           <AddStudent />
+          {/* <motion.div
+            className="bg-base-200 rounded-lg shadow-md mt-2"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ duration: 0.5, delay: 0.3 }}
+          >
+            <DeleteAttendance />
+          </motion.div> */}
         </motion.div>
       </section>
+
+      <div className="my-4">
+        <AttendanceManager />
+      </div>
 
       {/* Network Scanning Section */}
       <section className="w-4/5 mx-auto mb-6">

@@ -33,7 +33,7 @@ const StudentList = () => {
   };
 
   return (
-    <div>
+    <div className="">
       <div className="stats shadow">
         <div className="stat">
           <div className="stat-title">Total Students</div>
@@ -57,6 +57,7 @@ const StudentList = () => {
           <div className="stat-desc">11% less than last month</div>
         </div>
       </div>
+
       {loading ? (
         <div className="flex justify-center items-center mt-2">
           <ScaleLoader color="#36d7b7" />

@@ -6,8 +6,8 @@ import { StudentProvider } from "./contexts/StudentContext";
 import { Toaster } from "react-hot-toast";
 
 const App = () => {
-  const url = "https://sas-server-0g5o.onrender.com";
-  //const url = "http://localhost:3000";
+  //const url = "https://sas-server-0g5o.onrender.com";
+  const url = "http://localhost:3000";
 
   return (
     <StudentProvider url={url}>
