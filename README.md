@@ -14,12 +14,14 @@ A modern attendance management system that uses MAC address scanning to automati
 ## Tech Stack 🛠️
 
 ### Frontend
+
 - **React.js** with Vite
 - **Context API** for state management
 - **Modern UI Components**
 - **Real-time data updates**
 
 ### Backend
+
 - **Node.js & Express.js**
 - **MVC Architecture**
 - **MongoDB** for data storage
@@ -56,17 +58,20 @@ Smart Attendance System/
 ## API Endpoints 📡
 
 ### Student Management
+
 - `POST /add-student` - Add a new student
 - `GET /students` - Get all students
 - `PUT /update-student/:id` - Update student information
 - `DELETE /students/:id` - Delete a student
 
 ### Attendance
+
 - `GET /attendance` - Get all attendance records
 - `POST /attendance` - Mark attendance
 - `DELETE /attendance` - Delete all attendance records
 
 ### Network Scanning
+
 - `GET /networks` - Get all scanned networks
 - `POST /scan` - Handle network scan data
 - `DELETE /networks` - Delete all network records
@@ -80,12 +85,14 @@ Smart Attendance System/
 ## Installation and Setup 🛠️
 
 1. Clone the repository:
+
    ```bash
    git clone https://github.com/sakibnjr/Attendance_system_V2.git
    cd Attendance_system_V2
    ```
 
 2. Set up the Backend:
+
    ```bash
    cd Backend
    npm install
@@ -96,6 +103,7 @@ Smart Attendance System/
    ```
 
 3. Set up the Frontend:
+
    ```bash
    cd Frontend
    npm install
@@ -111,12 +119,14 @@ Smart Attendance System/
 ## Environment Variables 🔑
 
 ### Backend (.env)
+
 ```
 MONGO_URI=your_mongodb_connection_string
 PORT=your_port_number
 ```
 
 ### Frontend (.env)
+
 ```
 VITE_API_URL=http://localhost:your_backend_port
 ```
@@ -139,5 +149,3 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 - Special thanks to the open-source community for their invaluable tools and libraries
 
 ---
-
-Made with ❤️ by [Your Name]
