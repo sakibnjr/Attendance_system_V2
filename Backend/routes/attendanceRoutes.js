@@ -1,27 +1,15 @@
-// src/routes/attendanceRoutes.js
-const express = require("express");
-const Attendance = require("../models/attendance");
-
+const express = require('express');
 const router = express.Router();
+const {
+  markAttendance,
+  getAttendance,
+  deleteAllAttendance,
+  handleScan
+} = require('../controllers/attendanceController');
 
-// Get attendance records
-router.get("/", async (req, res) => {
-  try {
-    const records = await Attendance.find().sort({ timestamp: -1 });
-    res.json(records);
-  } catch (error) {
-    res.status(500).send("Error fetching attendance records");
-  }
-});
+router.post('/attendance', markAttendance);
+router.get('/attendance', getAttendance);
+router.delete('/attendance', deleteAllAttendance);
+router.post('/scan', handleScan);
 
-// Delete all attendance records
-router.delete("/", async (req, res) => {
-  try {
-    await Attendance.deleteMany({});
-    res.send("All attendance records deleted successfully");
-  } catch (error) {
-    res.status(500).send("Error deleting attendance records");
-  }
-});
-
-module.exports = router;
+module.exports = router; 

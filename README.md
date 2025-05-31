@@ -1,80 +1,143 @@
-# Biometric and IoT-Based Attendance System 🚀
+# Smart Attendance System 🚀
 
-This project is an innovative and efficient biometric attendance system integrated with IoT technology, designed to streamline attendance management and enhance security. By leveraging biometric authentication, IoT hardware, and real-time data processing, this system ensures accuracy and convenience for users and administrators.
+A modern attendance management system that uses MAC address scanning to automatically track student attendance. This system combines a React frontend with a Node.js backend to provide a seamless and efficient attendance tracking solution.
 
 ## Features ✨
 
-- **Biometric Authentication:** Ensures secure and accurate identity verification.
-- **Real-Time Attendance Tracking:** Updates attendance instantly via IoT devices.
-- **User-Friendly Interface:** Modern UI for managing students, attendance, and networks.
-- **Data Visualization:** Presents insightful statistics on attendance records.
-- **Customizable Hardware Enclosure:** Professionally designed enclosure for IoT components.
+- **MAC Address Based Authentication:** Automatically identifies students through their device MAC addresses
+- **Real-Time Attendance Tracking:** Instant attendance updates as students connect to the network
+- **Network Scanning:** Monitors and logs network connections for attendance verification
+- **Student Management:** Easy-to-use interface for managing student records
+- **Attendance Analytics:** View attendance statistics and reports
+- **Responsive Design:** Works seamlessly on both desktop and mobile devices
+
+## Tech Stack 🛠️
+
+### Frontend
+- **React.js** with Vite
+- **Context API** for state management
+- **Modern UI Components**
+- **Real-time data updates**
+
+### Backend
+- **Node.js & Express.js**
+- **MVC Architecture**
+- **MongoDB** for data storage
+- **RESTful API Design**
 
 ## Project Structure 🏗️
 
-### Frontend
-- **React.js**: For building a dynamic and interactive user interface.
-- **Key Components**:
-  - **LoginForm.jsx:** User authentication with biometric verification.
-  - **RegisterPage.jsx:** User registration with biometric setup.
-  - **Dashboard.jsx:** Overview of attendance, statistics, and user details.
+```
+Smart Attendance System/
+├── Frontend/
+│   ├── src/
+│   │   ├── components/
+│   │   ├── contexts/
+│   │   ├── pages/
+│   │   └── App.jsx
+│   └── index.html
+│
+└── Backend/
+    ├── models/
+    │   ├── Student.js
+    │   ├── Attendance.js
+    │   └── ScannedNetwork.js
+    ├── controllers/
+    │   ├── studentController.js
+    │   ├── attendanceController.js
+    │   └── networkController.js
+    ├── routes/
+    │   ├── studentRoutes.js
+    │   ├── attendanceRoutes.js
+    │   └── networkRoutes.js
+    └── server.js
+```
 
-### Backend
-- **Node.js & Express.js**: Backend APIs for managing data.
-- **MongoDB**: Database for storing users, attendance, and scanned networks.
-- **Endpoints**:
-  - `/students`: Add, update, and manage student records.
-  - `/attendance`: Record and fetch attendance details.
-  - `/scan`: Handle biometric authentication and IoT device inputs.
+## API Endpoints 📡
 
-### IoT Integration
-- **NodeMCU & Sensors:** Collect MAC addresses and biometric data.
-- **Real-Time Sync:** Communicates with the backend for seamless updates.
+### Student Management
+- `POST /add-student` - Add a new student
+- `GET /students` - Get all students
+- `PUT /update-student/:id` - Update student information
+- `DELETE /students/:id` - Delete a student
 
-## Hardware Setup ⚙️
-- **Components**:
-  - NodeMCU
-  - Fingerprint Sensor
-  - OLED/LED Display
-  - Breadboard and Jump Wires
-- **Enclosure Design**: Neatly organized hardware in a custom 3D-printed box.
+### Attendance
+- `GET /attendance` - Get all attendance records
+- `POST /attendance` - Mark attendance
+- `DELETE /attendance` - Delete all attendance records
 
-## Prerequisites 🛠️
-- **Software**:
-  - Node.js
-  - MongoDB
-  - React.js
-- **Hardware**:
-  - IoT components listed above.
+### Network Scanning
+- `GET /networks` - Get all scanned networks
+- `POST /scan` - Handle network scan data
+- `DELETE /networks` - Delete all network records
 
-## How to Run 🚀
+## Prerequisites 🚀
+
+- Node.js (v14 or higher)
+- MongoDB
+- npm or yarn
+
+## Installation and Setup 🛠️
+
 1. Clone the repository:
    ```bash
    git clone https://github.com/sakibnjr/Attendance_system_V2.git
+   cd Attendance_system_V2
    ```
-2. Install dependencies:
+
+2. Set up the Backend:
    ```bash
-   cd biometric-attendance-system
+   cd Backend
    npm install
-   ```
-3. Start the backend server:
-   ```bash
-   cd server
-   node index.js
-   ```
-4. Start the frontend:
-   ```bash
-   cd client
+   # Create a .env file with the following variables:
+   # MONGO_URI=your_mongodb_connection_string
+   # PORT=your_port_number
    npm start
    ```
-5. Deploy IoT hardware and connect it to the backend.
 
-## Acknowledgements 🙏
-Special thanks to:
-- **Instructor:** [N/A] for guidance and mentorship.
-- **Contributors:** Team members and collaborators for their hard work.
+3. Set up the Frontend:
+   ```bash
+   cd Frontend
+   npm install
+   # Create a .env file with:
+   # VITE_API_URL=http://localhost:your_backend_port
+   npm run dev
+   ```
+
+4. Access the application:
+   - Frontend: http://localhost:5173
+   - Backend: http://localhost:your_backend_port
+
+## Environment Variables 🔑
+
+### Backend (.env)
+```
+MONGO_URI=your_mongodb_connection_string
+PORT=your_port_number
+```
+
+### Frontend (.env)
+```
+VITE_API_URL=http://localhost:your_backend_port
+```
+
+## Contributing 🤝
+
+1. Fork the repository
+2. Create your feature branch (`git checkout -b feature/AmazingFeature`)
+3. Commit your changes (`git commit -m 'Add some AmazingFeature'`)
+4. Push to the branch (`git push origin feature/AmazingFeature`)
+5. Open a Pull Request
 
 ## License 📄
-This project is licensed under the MIT License.
+
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+
+## Acknowledgments 🙏
+
+- Thanks to all contributors who have helped shape this project
+- Special thanks to the open-source community for their invaluable tools and libraries
 
 ---
+
+Made with ❤️ by [Your Name]

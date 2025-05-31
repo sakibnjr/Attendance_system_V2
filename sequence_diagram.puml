@@ -1,0 +1,39 @@
+@startuml
+actor User
+participant Frontend
+participant Backend
+database Database
+participant NodeMCU
+participant "Biometric Module" as Biometric
+
+== Login Process ==
+User -> Frontend: Open Login Page
+Frontend -> Backend: POST /login (credentials)
+Backend -> Database: Validate Credentials
+Database --> Backend: Credentials Valid
+Backend -> Frontend: Login Success
+Frontend -> Biometric: Prompt for Biometric Verification
+Biometric --> Frontend: Biometric Verified
+
+== Attendance Marking ==
+User -> NodeMCU: Scan Device MAC
+NodeMCU -> Backend: Send MAC Address
+Backend -> Database: Check MAC Validity
+Database --> Backend: Valid MAC Found
+Backend -> Database: Record Attendance
+Backend -> Frontend: Attendance Marked Successfully
+
+== Scanned Network Sync ==
+NodeMCU -> Backend: Send Scanned Networks (SSID & MAC)
+Backend -> Database: Save or Update Network Info
+Backend --> NodeMCU: Network Data Synced
+
+== View Attendance ==
+User -> Frontend: Request Attendance Records
+Frontend -> Backend: GET /attendance
+Backend -> Database: Fetch Attendance Records
+Database --> Backend: Attendance Data
+Backend --> Frontend: Send Attendance Data
+Frontend -> User: Display Attendance
+
+@enduml
